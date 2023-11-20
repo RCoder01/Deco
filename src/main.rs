@@ -1,4 +1,4 @@
-use std::{collections::HashMap, f32::consts::PI};
+use std::{collections::HashMap, f32::consts::PI, time::Duration};
 
 use bevy::{
     a11y::{
@@ -17,6 +17,7 @@ use bevy::{
     window::{CursorGrabMode, PrimaryWindow},
 };
 use bevy_flycam::{FlyCam, KeyBindings, MovementSettings, NoCameraPlayerPlugin};
+use bevy_framepace::FramepaceSettings;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use bevy_mod_picking::{backends::raycast::bevy_mod_raycast::prelude::SimplifiedMesh, prelude::*};
 
@@ -40,6 +41,9 @@ fn main() {
             move_descend: KeyCode::Q,
             toggle_grab_cursor: KeyCode::R,
             ..Default::default()
+        })
+        .insert_resource(FramepaceSettings {
+            limiter: bevy_framepace::Limiter::Manual(Duration::from_secs_f32(1./30.)),
         })
         .init_resource::<LoadedModelList>()
         .init_resource::<AabbMeshMap>()
